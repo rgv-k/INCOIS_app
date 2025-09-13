@@ -1,6 +1,5 @@
 const Report = require('../models/Report'); //filepath for report 
 
-// Get all reports - returns a list of all hazard reports
 exports.getAllReports = async (req, res) => //export report
 {
   try 

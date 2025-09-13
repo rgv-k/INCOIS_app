@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-// Report schema for ocean hazard reports
+
 const reportSchema = new mongoose.Schema({
   title:
    {
