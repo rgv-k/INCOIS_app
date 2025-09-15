@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Ocean Hazard Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Leaflet CSS & JS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+</head>
+<body>
+  <!-- Top Navbar -->
+  <nav class="topbar">
+    <div class="brand">🌊 Ocean Hazard Platform</div>
+    <ul class="top-links">
+      <li>Dashboard</li>
+      <li>Reports</li>
+      <li>Analytics</li>
+      <li>Alerts</li>
+      <li><img src="https://i.pravatar.cc/30" class="avatar"></li>
+    </ul>
+  </nav>
+
+  <div class="dashboard-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <h3>Quick Actions</h3>
+        <button class="btn-primary">+ New Report</button>
+        <button class="btn-outline">View Map</button>
+      </div>
+
+      <div class="sidebar-section">
+        <h3>Filters</h3>
+        <label>Event Type</label>
+        <select>
+          <option>All Events</option>
+          <option>Tsunami</option>
+          <option>High Waves</option>
+          <option>Flood</option>
+        </select>
+        <label>Location</label>
+        <select>
+          <option>All Regions</option>
+          <option>Mumbai</option>
+          <option>Chennai</option>
+        </select>
+        <label>Date Range</label>
+        <input type="date">
+      </div>
+
+      <div class="sidebar-section">
+        <h3>Active Alerts</h3>
+        <div class="alert-box">
+          <strong>High wave warning</strong><br>
+          for Mumbai coast<br>
+          <small>2 hours ago</small>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main content -->
+    <main class="main">
+      <header>
+        <h1>Ocean Hazard Dashboard</h1>
+        <p>Real-time crowdsourced reports and social media analytics</p>
+      </header>
+
+      <!-- Stats cards -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h4>Total Reports</h4>
+          <p class="stat">1,247</p>
+          <small>+12% from last week</small>
+        </div>
+        <div class="stat-card">
+          <h4>Active Events</h4>
+          <p class="stat">8</p>
+          <small>3 high priority</small>
+        </div>
+        <div class="stat-card">
+          <h4>Social Mentions</h4>
+          <p class="stat">2,891</p>
+          <small>Last 24 hours</small>
+        </div>
+        <div class="stat-card">
+          <h4>Response Time</h4>
+          <p class="stat">4.2m</p>
+          <small>-15% improvement</small>
+        </div>
+      </div>
+
+      <!-- Map + Recent Reports -->
+      <div class="main-grid">
+        <div class="map-box">
+          <div class="map-header">
+            <h3>Interactive Map View</h3>
+            <div class="map-tabs">
+              <button class="active">Reports</button>
+              <button>Hotspots</button>
+              <button>Live</button>
+            </div>
+          </div>
+          <div id="map"></div>
+
+        </div>
+
+        <div class="recent-reports">
+          <h3>Recent Reports</h3>
+          <div class="report">
+            <strong>Coastal Resident</strong> <span>2 min ago</span> <span class="tag high">High Waves</span>
+            <p>Unusual high waves observed at Marina Beach, Chennai.</p>
+            <small>📍 Chennai, TN — 2 photos</small>
+          </div>
+          <div class="report">
+            <strong>Fisherman</strong> <span>15 min ago</span> <span class="tag med">Storm Surge</span>
+            <p>Strong currents near Kochi harbor.</p>
+            <small>📍 Kochi, KL — 1 video</small>
+          </div>
+          <div class="report">
+            <strong>Local Authority</strong> <span>32 min ago</span> <span class="tag low">Normal</span>
+            <p>Sea returning to normal after yesterday’s alert.</p>
+            <small>📍 Mumbai, MH — Verified</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Social media analytics -->
+      <div class="analytics-box">
+        <h3>Social Media Analytics</h3>
+        <div class="keywords">
+          <span>#tsunami</span><span>#highwaves</span>
+          <span>#coastalflood</span><span>#marineweather</span>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script>
+  // Initialize the map
+  const map = L.map('map').setView([20.5937, 78.9629], 5); // Center on India
+
+  // Add base map tiles
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 18,
+    attribution: '© OpenStreetMap'
+  }).addTo(map);
+
+  const markers = [];
+
+  function loadMapReports() {
+    markers.forEach(m => map.removeLayer(m));
+    markers.length = 0;
+
+    const reports = JSON.parse(localStorage.getItem('citizenReports')) || [];
+    reports.forEach(r => {
+      if (r.lat && r.lng) {
+        const marker = L.marker([r.lat, r.lng])
+          .bindPopup(`<strong>${r.hazardType}</strong><br>${r.description}<br><em>${r.location}</em>`);
+        marker.addTo(map);
+        markers.push(marker);
+      }
+    });
+  }
+
+  // Modify submitReport to also save random coordinates
+  function submitReport() {
+    const description = document.getElementById('description').value;
+    const hazardType = document.getElementById('hazardType').value;
+    const location = document.getElementById('location').value;
+
+    if (!description || !hazardType || !location) {
+      alert("Please fill all fields");
+      return;
+    }
+
+    // Random demo coordinates (replace with real GPS later)
+    const randomLat = 8 + Math.random() * 20;
+    const randomLng = 68 + Math.random() * 15;
+
+    const reports = JSON.parse(localStorage.getItem('citizenReports')) || [];
+    reports.push({
+      description,
+      hazardType,
+      location,
+      lat: randomLat,
+      lng: randomLng,
+      time: new Date().toLocaleString()
+    });
+    localStorage.setItem('citizenReports', JSON.stringify(reports));
+
+    document.getElementById('description').value = "";
+    document.getElementById('hazardType').value = "";
+    document.getElementById('location').value = "";
+
+    alert("Report submitted ✅");
+    loadReports();
+    loadMapReports();
+  }
+
+  // Load reports list + map on startup
+  loadReports();
+  loadMapReports();
+</script>
+
+</body>
+</html>
