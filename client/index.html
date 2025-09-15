@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Ocean Hazard Reporting Platform</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .landing {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+    }
+    .landing h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    .landing p {
+      max-width: 500px;
+      margin-bottom: 2rem;
+      color: #444;
+    }
+    .landing button {
+      width: 220px;
+      padding: 12px;
+      margin: 10px;
+      border-radius: 10px;
+      border: none;
+      background: #007bff;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .landing button:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="landing">
+    <h1>🌊 Ocean Hazard Reporting Platform</h1>
+    <p>Report ocean hazards and help disaster agencies respond faster using real-time citizen data and social media analytics.</p>
+    <button onclick="window.location.href='login.html'">Citizen Login / Register</button>
+    <!-- for admin login add: -->
+    <!-- <button onclick="window.location.href='official-login.html'">Official Login</button> -->
+  </div>
+</body>
+</html>
