@@ -5,8 +5,10 @@
   <title>Ocean Hazard Dashboard</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
+  <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
 
 </head>
 <body>
@@ -130,6 +132,19 @@
       </div>
     </main>
   </div>
+  
+  <!-- Full Screen Map Modal -->
+  <div id="mapModal" class="map-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>🌊 Ocean Hazard Map - Disaster Response</h2>
+        <button id="findReliefCenters" class="relief-btn">📍 Find Nearest Relief Centers</button>
+        <span class="close-modal" id="closeModal">&times;</span>
+      </div>
+      <div id="fullScreenMap" class="full-screen-map"></div>
+    </div>
+  </div>
+  
   <script src="js/dashboard.js" defer></script>
 </body>
 </html>
