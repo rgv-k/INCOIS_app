@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>Citizen Login</title>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="manifest" href="manifest.json">
 </head>
 <body>
   <div class="login-wrapper">
@@ -18,5 +19,14 @@
     </div>
   </div>
   <script src="js/login.js"></script>
+  <script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js')
+        .then(reg => console.log('Service Worker registered.', reg))
+        .catch(err => console.error('Service Worker registration failed:', err));
+    });
+  }
+</script>
 </body>
 </html>

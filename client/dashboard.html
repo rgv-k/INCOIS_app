@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
-
+  <link rel="manifest" href="manifest.json">
 </head>
 <body>
   <nav class="topbar">
@@ -132,5 +132,14 @@
     </main>
   </div>
   <script src="js/dashboard.js" defer></script>
+  <script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js')
+        .then(reg => console.log('Service Worker registered.', reg))
+        .catch(err => console.error('Service Worker registration failed:', err));
+    });
+  }
+</script>
 </body>
 </html>

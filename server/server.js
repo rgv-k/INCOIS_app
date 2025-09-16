@@ -139,18 +139,30 @@ app.get('/api/hotspots', async (req, res) => {
     }
 });
 
-// --- NEW SOS ROUTE ---
+// server.js
+
+// --- FINAL ONLINE SOS ROUTE (with Geolocation) ---
 app.post('/api/sos', protect, async (req, res) => {
     try {
-        // Find the user to get their name/email for the message
+        // 1. Get the coordinates from the request body
+        const { latitude, longitude } = req.body;
+        if (!latitude || !longitude) {
+            return res.status(400).json({ message: 'Location coordinates are required.' });
+        }
+
+        // 2. Find the user to get their email
         const user = await User.findById(req.user.userId).select('-password');
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        const messageBody = `SOS ALERT! User ${user.name} (${user.email}) has triggered an emergency request. Immediate assistance may be required.`;
+        // 3. Create a direct Google Maps link for the coordinates
+        const mapsLink = `http://maps.google.com/maps?q=${latitude},${longitude}`;
 
-        // Send the SMS using Twilio
+        // 4. Construct the full message body
+        const messageBody = `SOS ALERT!\nFrom: ${user.email}\nLocation Coordinates: ${latitude}, ${longitude}\nMap Link: ${mapsLink}`;
+
+        // 5. Send the SMS using Twilio
         await twilioClient.messages.create({
             body: messageBody,
             from: process.env.TWILIO_PHONE_NUMBER,

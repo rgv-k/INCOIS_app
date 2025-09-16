@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <title>New Report - Ocean Hazard Platform</title>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="manifest" href="manifest.json">
+  <script src="https://cdn.jsdelivr.net/npm/idb@7/build/umd.js"></script>
 </head>
 <body>
   <div class="login-wrapper">
@@ -27,5 +29,14 @@
     </div>
   </div>
   <script src="js/new-report.js" defer></script>
+  <script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js')
+        .then(reg => console.log('Service Worker registered.', reg))
+        .catch(err => console.error('Service Worker registration failed:', err));
+    });
+  }
+</script>
 </body>
 </html>

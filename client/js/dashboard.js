@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-// --- SOS BUTTON LOGIC (with Geolocation) ---
+// --- FINAL ONLINE SOS BUTTON LOGIC (with Geolocation) ---
 const sosButton = document.getElementById('sosButton');
 if (sosButton) {
   sosButton.addEventListener('click', () => {
