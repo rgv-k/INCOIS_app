@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>New Report - Ocean Hazard Platform</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="login-wrapper">
+    <div class="login-box" id="report-form-box">
+      <h2>Submit a New Report</h2>
+      <form id="reportForm">
+        <input type="text" id="reportTitle" placeholder="Report Title" required>
+        <select id="hazardType" required>
+          <option value="" disabled selected>Select Hazard Type</option>
+          <option value="Tsunami">Tsunami</option>
+          <option value="High Waves">High Waves</option>
+          <option value="Coastal Flooding">Coastal Flooding</option>
+          <option value="Storm Surge">Storm Surge</option>
+          <option value="Other">Other</option>
+        </select>
+        <textarea id="reportDescription" placeholder="Description of the hazard..." rows="5" required></textarea>
+        <input type="file" id="reportImage" accept="image/*">
+        <p>Your location will be acquired with permission for this report.</p>
+        <button type="submit" id="submitReportBtn">Submit Report</button>
+      </form>
+    </div>
+  </div>
+  <script src="js/new-report.js" defer></script>
+</body>
+</html>
