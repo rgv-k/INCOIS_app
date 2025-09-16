@@ -40,3 +40,63 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+
+// --- SOS BUTTON LOGIC (with Geolocation) ---
+const sosButton = document.getElementById('sosButton');
+if (sosButton) {
+  sosButton.addEventListener('click', () => {
+    // 1. Confirm with the user first
+    const isConfirmed = confirm('Are you sure you want to send an emergency SOS alert with your current location?');
+    
+    if (isConfirmed) {
+      // 2. Check if geolocation is available
+      if (!navigator.geolocation) {
+        return alert('Geolocation is not supported by your browser.');
+      }
+
+      // 3. Get the user's current position
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          // Success: We have the coordinates
+          const { latitude, longitude } = position.coords;
+          sendSosAlert(latitude, longitude);
+        },
+        () => {
+          // Error: Failed to get location
+          alert('Could not get your location. Please ensure location services are enabled.');
+        }
+      );
+    }
+  });
+}
+
+// Helper function to send the actual alert to the server
+async function sendSosAlert(latitude, longitude) {
+  const token = localStorage.getItem('authToken');
+  if (!token) {
+    return alert('You must be logged in to send an SOS.');
+  }
+
+  try {
+    const response = await fetch('http://localhost:3000/api/sos', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ latitude, longitude }) // Send the coordinates
+    });
+
+    const result = await response.json();
+
+    if (response.ok) {
+      alert('Emergency SOS message with your location has been sent!');
+    } else {
+      alert(`Error: ${result.message}`);
+    }
+  } catch (error) {
+    console.error('SOS fetch error:', error);
+    alert('A network error occurred. Could not send SOS.');
+  }
+}
